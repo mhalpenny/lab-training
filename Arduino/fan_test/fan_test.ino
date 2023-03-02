@@ -1,14 +1,22 @@
+//For onboard storage (leave for a later date)
 #include <EEPROM.h>
-
-#define FAN_PIN 3;
 #define FS_ADDR 0x01
+
+// fan variables, pin D3 which has PWM
+#define FAN_PIN 3;
 int   fanSpeed;
 
 void setup() {
-  // put your setup code here, to run once:
-   pinMode(3, OUTPUT);
+  // set hardware settings for Mega
+  pinMode(FAN_PIN, OUTPUT);
   EEPROM.get(FS_ADDR, fanSpeed);
-  if(fanSpeed < 1)   fanSpeed = 255;
+
+  // check if fan is off, if true, turn on
+  if(fanSpeed < 1){
+    fanSpeed = 255; 
+  }
+
+  // send output to turn the fan on
   analogWrite(FAN_PIN, fanSpeed);
   Serial.begin(9600);
 
